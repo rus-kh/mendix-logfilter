@@ -23,7 +23,7 @@ func init() {
 
 func reset() {
 	if drops > 0 {
-		fmt.Fprintf(os.Stderr, "dropped %d messages\n", drops)
+		fmt.Fprintf(os.Stderr, "Rate-limiting to %d loglines/second. Suppressed %d.\n", flagRate, drops)
 		drops = 0
 	}
 }
