@@ -1,37 +1,30 @@
-# rl
+# mendix-logfilter
+
+This is based on https://github.com/42wim/rl.
 
 Rate limit messages from stdin. (keep or drop those exceeding the limit)
 
 # Use case
-* When sending data to mattermost (or slack), it's convenient to limit the amount of data that can be sent.
 
-E.g. when using [mattertee](https://github.com/42wim/matterstuff/tree/master/mattertee) to send output to mattermost, you can now just pipe it through rl so that your channels aren't being flooded.
+* When logging it can be convenient to limit the amount of data that can be sent.
 
-* Tailing -f a very quickly increasing logfile when in tmux remotely ;)
-
-# Installing
-## Binaries
-Binaries can be found [here] (https://github.com/42wim/rl/releases/)
-
-## Building
+# Building
 Go 1.6+ is required. Make sure you have [Go](https://golang.org/doc/install) properly installed, including setting up your [GOPATH] (https://golang.org/doc/code.html#GOPATH
 )
 
 ```
-cd $GOPATH
-go get github.com/42wim/rl
+$ make
 ```
 
-You should now have rl binary in the bin directory:
+or build with a specific version of golang:
 
 ```
-$ ls bin/
-rl
+$ docker run --rm -it -v "$PWD":/build -w /build golang:1.9-stretch make
 ```
 
 # Usage
 ```
-Usage of ./rl:
+Usage of ./mendix-logfilter:
   -k    keep the messages instead of dropping them
   -r int
         limit to r messages per second (drops those exceeding the limit) (default 5)
@@ -43,5 +36,5 @@ Usage of ./rl:
 
 # Example
 ```
-journalctl -f | rl -k -r 5
+tail -f runtime.log | mendix-logfilter -k -r 5
 ```
