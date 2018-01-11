@@ -7,6 +7,7 @@ import (
 	"github.com/juju/ratelimit"
 	"os"
 	"regexp"
+	"strconv"
 	"time"
 )
 
@@ -17,7 +18,11 @@ var (
 )
 
 func init() {
-	flag.Int64Var(&flagRate, "r", 5, "limit to r messages per second (drops those exceeding the limit)")
+	rate, _ := strconv.Atoi(os.Getenv("LOG_RATELIMIT"))
+	if rate == 0 {
+		rate = 1000
+	}
+	flag.Int64Var(&flagRate, "r", int64(rate), "limit to r messages per second (drops those exceeding the limit)")
 	flag.BoolVar(&flagKeep, "k", false, "keep the messages instead of dropping them")
 	flag.Parse()
 }
