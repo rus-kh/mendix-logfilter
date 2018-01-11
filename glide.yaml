@@ -1,0 +1,5 @@
+package: .
+import:
+- package: github.com/juju/ratelimit
+  version: 59fac5042749a5afb9af70e813da1dd5474f0167
+  repo: https://github.com/juju/ratelimit
