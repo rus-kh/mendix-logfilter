@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/juju/ratelimit"
 	"os"
+	"regexp"
 	"time"
 )
 
@@ -28,6 +29,11 @@ func reset() {
 	}
 }
 
+func parseMendixLogline(line string) string {
+	re := regexp.MustCompile("^[0-9-]+\\s[0-9:\\.]+\\s")
+	return re.ReplaceAllString(line, "")
+}
+
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	c := make(chan string)
@@ -45,10 +51,10 @@ func main() {
 		case line := <-c:
 			if flagKeep {
 				l.Wait(1)
-				fmt.Println(line)
+				fmt.Println(parseMendixLogline(line))
 			} else {
 				if l.TakeAvailable(1) > 0 {
-					fmt.Println(line)
+					fmt.Println(parseMendixLogline(line))
 					reset()
 				} else {
 					drops++
