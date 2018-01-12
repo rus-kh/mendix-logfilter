@@ -2,7 +2,7 @@
 
 This is based on https://github.com/42wim/rl.
 
-Rate limit messages from stdin. (keep or drop those exceeding the limit)
+Rate limit messages from stdin or read from a file. (keep or drop those exceeding the limit)
 
 # Use case
 
@@ -25,6 +25,8 @@ $ docker run --rm -it -v "$PWD":/build -w /build golang:1.9-stretch make
 # Usage
 ```
 Usage of ./mendix-logfilter:
+  -f string
+        define a file as input
   -k    keep the messages instead of dropping them
   -r int
         limit to r messages per second (drops those exceeding the limit) (default 5)
@@ -34,7 +36,13 @@ Usage of ./mendix-logfilter:
 ```
 
 
-# Example
+# Examples
 ```
 tail -f runtime.log | mendix-logfilter -k -r 5
+```
+
+```
+mkfifo fifo.log
+mendix-logfilter -k -r 5 -f fifo.log
+cat runtime.log > fifo.log
 ```
